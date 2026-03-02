@@ -100,30 +100,155 @@ TABLE_IDS = ["0001", "0002", "0003", "0004"]
 
 ## Design system
 1. color
-(Purpose)           (Color Name)    (Hex Code)        (Usage)
-Window Background     BG_DARK        #1a1a2e        Main window bg
-Card Background       BG_CARD        #16213e        Dialogs, frames
-Panel Background      BG_PANEL       #0f3460        Headers, footer
-Primary Accent        ACCENT         #e94560        Main buttons
-Secondary Accent      ACCENT2        #f5a623        Gold highlights
-Available Status      GREEN          #2ecc71        Available tables
-Available Hover       GREEN_DARK     #27ae60        Hover on green
-In-Use Status         TABLE_BUSY     #e74c3c        Busy tables
-Hover Effect          TABLE_HOVER    #f39c12        Hover on tables
-Neutral/Disabled      GREY_MID       #4a4a6a        Disabled elements
-Primary Text          TEXT_LIGHT     #eaeaea        Main text
-Secondary Text        TEXT_DIM       #8888aa        Dim text
+   <table border="1" cellpadding="8" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Purpose</th>
+      <th>Color Name</th>
+      <th>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Window Background</td>
+      <td>BG_DARK</td>
+      <td>Main window bg</td>
+    </tr>
+    <tr>
+      <td>Card Background</td>
+      <td>BG_CARD</td>
+      <td>Dialogs, frames</td>
+    </tr>
+    <tr>
+      <td>Panel Background</td>
+      <td>BG_PANEL</td>
+      <td>Headers, footer</td>
+    </tr>
+    <tr>
+      <td>Primary Accent</td>
+      <td>ACCENT</td>
+      <td>Main buttons</td>
+    </tr>
+    <tr>
+      <td>Secondary Accent</td>
+      <td>ACCENT2</td>
+      <td>Gold highlights</td>
+    </tr>
+    <tr>
+      <td>Available Status</td>
+      <td>GREEN</td>
+      <td>Available tables</td>
+    </tr>
+    <tr>
+      <td>Available Hover</td>
+      <td>GREEN_DARK</td>
+      <td>Hover on green</td>
+    </tr>
+    <tr>
+      <td>In-Use Status</td>
+      <td>TABLE_BUSY</td>
+      <td>Busy tables</td>
+    </tr>
+    <tr>
+      <td>Hover Effect</td>
+      <td>TABLE_HOVER</td>
+      <td>Hover on tables</td>
+    </tr>
+    <tr>
+      <td>Neutral/Disabled</td>
+      <td>GREY_MID</td>
+      <td>Disabled elements</td>
+    </tr>
+    <tr>
+      <td>Primary Text</td>
+      <td>TEXT_LIGHT</td>
+      <td>Main text</td>
+    </tr>
+    <tr>
+      <td>Secondary Text</td>
+      <td>TEXT_DIM</td>
+      <td>Dim text</td>
+    </tr>
+  </tbody>
+</table>
 
 2. fonts
-    Element             Font          Size    Weight   
-Page Title            Segoe UI         22      Bold  
- Dialog/Window Title  Segoe UI         14      Bold   
- Body Text            Segoe UI         11     Normal 
- Button Text          Segoe UI         11      Bold  
-  Small               Segoe UI          9     Normal 
-Technical             Courier New      11      Bold
+<table border="1" cellpadding="8" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Element</th>
+      <th>Font</th>
+      <th>Size</th>
+      <th>Weight</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Page Title</td>
+      <td>Segoe UI</td>
+      <td>22</td>
+      <td>Bold</td>
+    </tr>
+    <tr>
+      <td>Dialog/Window Title</td>
+      <td>Segoe UI</td>
+      <td>14</td>
+      <td>Bold</td>
+    </tr>
+    <tr>
+      <td>Body Text</td>
+      <td>Segoe UI</td>
+      <td>11</td>
+      <td>Normal</td>
+    </tr>
+    <tr>
+      <td>Button Text</td>
+      <td>Segoe UI</td>
+      <td>11</td>
+      <td>Bold</td>
+    </tr>
+    <tr>
+      <td>Small</td>
+      <td>Segoe UI</td>
+      <td>9</td>
+      <td>Normal</td>
+    </tr>
+    <tr>
+      <td>Technical</td>
+      <td>Courier New</td>
+      <td>11</td>
+      <td>Bold</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Configuration Documentation
+
+**Configuration 1**
+-variable name: DATA_FILE
+-type: String
+-Default Value:	"mahjong_data.json"
+-Format: JSON
+-Location in project: mahjong_system.py
+-Who uses it: class repository
+
+**configuration 2**
+-Variable Name:	RATE_PER_HOUR
+-Type:	Integer
+-Default Value:	10
+-Currency: Yuan (¥)
+-Unit:	Per hour
+-Purpose:	Base pricing for table sessions
+-Who uses it:	Repository.open_table(), OpenTableDialog
+
+**configuration 3**
+Variable Name:	TABLE_IDS
+Type:	List of Strings
+Default Value:	["0001", "0002", "0003", "0004"]
+Format:	4-digit strings
+Count:	4 tables
+Purpose:	All available table identifiers
+Who uses it:Dashboard (creates TableCard for each)
 
 ## Installation
 
