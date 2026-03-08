@@ -302,10 +302,10 @@ main codes/main pro/
 - Format:	4-digit strings
 - Count:	4 tables
 - Purpose:	All available table identifiers
-
 ## User guide
 **register**
 1. user see two pages (login and register) and the management system
+- ![WhatsApp Image 2026-03-07 at 7 02 02 PM](https://github.com/user-attachments/assets/00820471-022f-4e69-aa69-4687d172a086)
 2. user click 'register'
 3. enter name and password
 4. confirm password
@@ -326,6 +326,7 @@ main codes/main pro/
 - AuthWindow closes
 - Dashboard appears
 - You see your username in header
+
 6. error:
 - Red error message shows
 - Check username and password
@@ -333,6 +334,7 @@ main codes/main pro/
 **Top-up**
 1. User clicks "Top-Up" button in header
 - TopUpDialog window opens
+- ![WhatsApp Image3 2026-03-07 at 7 02 32 PM](https://github.com/user-attachments/assets/75dc749a-157c-445d-aebf-38a894568c77)
 - Shows current balance
 2. User can choose:
 - Click quick amount button (¥30, ¥50, ¥100, ¥200)
@@ -345,9 +347,11 @@ main codes/main pro/
 6. Success message shown
 **book table**
 1. user will see 4 table
+-  ![WhatsApp 2Image 2026-03-07 at 7 02 16 PM](https://github.com/user-attachments/assets/60b2713f-8ba8-44e7-8fbd-a70fcdb3266b)
 2. user can open table with green status
 3. OpenTableDialog window opens
 4. Shows table ID and current balance
+- ![WhatsApp Image 42026-03-07 at 7 02 47 PM](https://github.com/user-attachments/assets/421ca834-3ef7-416c-abcb-3c524a018d5c)
 5. User selects duration:
 - 1 hour =  ¥10
 - 2 hours = ¥20
@@ -400,6 +404,7 @@ If you click "No":
 2. Password: admin123
 3. Dashboard switches to Admin Dashboard
 4. 4 Tabs available at the top
+- ![WhatsApp Image 2026-03-07 at 7 03 04 PM](https://github.com/user-attachments/assets/5ef30493-079e-402d-92bb-50d187ca1057)
 
 **Tab1: User management**
 1. View Users:
