@@ -14,6 +14,8 @@ A desktop application for managing mahjong table bookings and player accounts. B
 - [Configuration Documentation](#configuration-documentation)
 - [User guide](#user-guide)
 - [Admin Guide](#admin-guide)
+- [Database schema](#database-schema)
+- [Troubleshooting](#troubleshooting)
 
 ## Code Analysis
 **class** 
@@ -24,7 +26,7 @@ A desktop application for managing mahjong table bookings and player accounts. B
 3. balance (money in account)
 4. check_password() (verify if password matches)
 
-**Session**
+**Booking**
 (one mahjong table session. It records which table, who is using it, how many hours they booked, when they started, and automatically calculates when they'll finish and how much it costs)
 -class Session:
 1. table_id ( table being used )
@@ -113,25 +115,40 @@ Repository (The Storage Manager):
 RATE_PER_HOUR = 10
 TABLE_IDS = ["0001", "0002", "0003", "0004"]
 
-2.Models Layer (data structure)
+2. Models Layer (data structure)
 - class User
 - class Booking
 
-3.Persistence Layer (storage )
+3. Persistence Layer (storage )
 - class Repository
 
-4.UI Helper Layer(styling , reusable)
+4. UI Helper Layer(styling , reusable)
 - Colors
 - Fonts
 - Animations
 - Effects
 
-5.UI Window Layer (user interface)
+5. UI Window Layer (user interface)
 - AuthWindow
 - TopUpDialog
 - TableCard
 - OpenTableDialog
 - Dashboard
+
+## Code Structure
+main codes/main pro/
+- run.py (Application entry point)
+- config.py (Configuration & constants)
+- models.py (Data models (User, Booking)
+- storage.py (Data persistence layer)
+- UI.py (UI helper functions & styling)
+- verify.py (Authentication window)
+- dashboard.py (Main dashboard)
+- admin.py (Admin panel)
+- tabless.py(Table card component)
+- opentable.py (Open table dialog)
+- topup.py(Top-up dialog)
+- mahjong_data.json(Data storage file)
 
 ## Design system
 1. color
@@ -377,7 +394,7 @@ If you click "No":
 - Nothing changes
 - Dialog closes
 
-# Admin Guide
+## Admin Guide
 **login the admin**
 1. Username: admin
 2. Password: admin123
@@ -458,6 +475,116 @@ If you click "No":
 - data cleared
 - test data recreated
 - system reset
+
+
+## Database Schema
+1. data file: mahjong_data.json
+```conf
+{
+  "users": {
+    "username1": {
+      "username": "username1",
+      "password_hash": "sha256_hash_here",
+      "balance": 100.50
+    },
+    "username2": {
+      "username": "username2",
+      "password_hash": "sha256_hash_here",
+      "balance": 75.00
+    }
+  },
+  "bookings": {
+    "0001": {
+      "table_id": "0001",
+      "username": "username1",
+      "hours": 3,
+      "start_time": "2026-03-08T14:30:00.123456",
+      "cost": 30
+    }
+  }
+}
+{
+  "users": {
+    "username1": {
+      "username": "username1",
+      "password_hash": "sha256_hash_here",
+      "balance": 100.50
+    },
+    "username2": {
+      "username": "username2",
+      "password_hash": "sha256_hash_here",
+      "balance": 75.00
+    }
+  },
+  "bookings": {
+    "0001": {
+      "table_id": "0001",
+      "username": "username1",
+      "hours": 3,
+      "start_time": "2026-03-08T14:30:00.123456",
+      "cost": 30
+    }
+  }
+}
+```
+2. User Object Structure
+- username(string)
+- password_hash(string)
+- balance(float)
+
+3. Booking Object Strycture
+- table_id(string)
+- username(string)
+- hours(integer)
+- start_time(string)
+- cost(float)
+
+## Troubleshooting
+**No module named'tkinter'**
+```conf
+# Windows
+python -m pip install --upgrade python
+
+# macOS
+brew install python-tk@3.10
+
+# Linux (Debian/Ubuntu)
+sudo apt-get install python3-tk
+
+# Linux (Fedora/RHEL)
+sudo dnf install python3-tkinter
+````
+**Can't Login**
+1. check username spelling
+2. verify password is correct
+3. register new account if forgotten password
+
+**Balance Not Updating**
+1. Close and reopen it
+2. CHeck mahjong_data.json file
+3. verify file permissions are correct
+4. try top-up again
+
+**Table Won't Open**
+- add more fund
+- check if cost exceeds balance
+- verify balance in user account
+
+**Admin Features Not Working**
+- ensure looged in as admin
+- restart it
+
+**Data Loss**
+- restore from backup file
+- if not: restart it
+
+## support
+for issues or question:
+- check the troubleshooting section
+- review the user guide
+
+  
+
 
 
 
