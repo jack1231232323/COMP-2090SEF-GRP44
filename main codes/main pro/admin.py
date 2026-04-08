@@ -1,3 +1,6 @@
+# admin.py
+# Jack, Choi do 
+
 import tkinter as tk
 from tkinter import ttk, messagebox
 from config import *

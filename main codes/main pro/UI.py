@@ -1,173 +1,125 @@
+# UI.py
+# Jack's part - animations and styling helpers
+# Choi's part - button creation and entry styling
+# Guo's part - pulse and shake effects
+
 import tkinter as tk
 from config import *
 
-def fade_in(w, d=300):
+# Jack's fade effects
+def fade_in(w, duration=300):
     try:
         if not w.winfo_exists():
             return
         w.attributes('-alpha', 0.0)
-        
-        def upd(a=0.0):
+        alpha = 0.0
+        def step():
+            nonlocal alpha
             try:
                 if w.winfo_exists():
-                    a += 0.1
-                    w.attributes('-alpha', min(a, 1.0))
-                    if a < 1.0:
-                        w.after(30, lambda: upd(a))
+                    alpha += 0.1
+                    w.attributes('-alpha', min(alpha, 1.0))
+                    if alpha < 1.0:
+                        w.after(30, step)
             except:
                 pass
-        w.after(50, lambda: upd())
+        w.after(50, step)
     except:
         pass
 
-def fade_out(w, on_complete=None):
+def fade_out(w, callback=None):
     try:
         if not w.winfo_exists():
-            if on_complete:
-                on_complete()
+            if callback: callback()
             return
-        
-        def upd(a=1.0):
+        alpha = 1.0
+        def step():
+            nonlocal alpha
             try:
                 if w.winfo_exists():
-                    a -= 0.1
-                    if a > 0:
-                        w.attributes('-alpha', a)
-                        w.after(30, lambda: upd(a))
+                    alpha -= 0.1
+                    if alpha > 0:
+                        w.attributes('-alpha', alpha)
+                        w.after(30, step)
                     else:
-                        if on_complete:
-                            on_complete()
-            except:
-                if on_complete:
-                    on_complete()
-        upd()
-    except:
-        if on_complete:
-            on_complete()
-
-def pulse_button(b):
-    try:
-        if not b.winfo_exists():
-            return
-        orig = b.cget('bg')
-        
-        def p(c=0):
-            try:
-                if b.winfo_exists() and c < 6:
-                    if c % 2 == 0:
-                        r, g, b_ = b.winfo_rgb(orig)
-                        darker = f'#{int(r/256*0.8):02x}{int(g/256*0.8):02x}{int(b_/256*0.8):02x}'
-                        b.config(bg=darker)
-                    else:
-                        b.config(bg=orig)
-                    b.after(100, lambda: p(c + 1))
+                        if callback: callback()
                 else:
-                    b.config(bg=orig)
+                    if callback: callback()
             except:
-                b.config(bg=orig)
-        p()
+                if callback: callback()
+        step()
+    except:
+        if callback: callback()
+
+# Guo's pulse_button
+def pulse_button(btn):
+    try:
+        if not btn.winfo_exists():
+            return
+        orig = btn.cget('bg')
+        def pulse(count=0):
+            if btn.winfo_exists() and count < 6:
+                if count % 2 == 0:
+                    r,g,b = btn.winfo_rgb(orig)
+                    darker = f'#{int(r/256*0.7):02x}{int(g/256*0.7):02x}{int(b/256*0.7):02x}'
+                    btn.config(bg=darker)
+                else:
+                    btn.config(bg=orig)
+                btn.after(100, lambda: pulse(count+1))
+            else:
+                btn.config(bg=orig)
+        pulse()
     except:
         pass
 
+# Guo's shake_widget
 def shake_widget(w):
     try:
         if not w.winfo_exists():
             return
         ox = w.winfo_x()
-        
-        def s(c=0):
-            try:
-                if w.winfo_exists() and c < 6:
-                    off = 5 if c % 2 == 0 else -5
-                    w.place(x=ox + off)
-                    w.after(50, lambda: s(c + 1))
-                else:
-                    w.place(x=ox)
-            except:
+        def shake(count=0):
+            if w.winfo_exists() and count < 6:
+                off = 5 if count%2==0 else -5
+                w.place(x=ox+off)
+                w.after(50, lambda: shake(count+1))
+            else:
                 w.place(x=ox)
-        s()
+        shake()
     except:
         pass
 
-def slide_down(w):
-    try:
-        if not w.winfo_exists():
-            return
-        w.pack_forget()
-        w.pack(fill="x", pady=5)
-    except:
-        pass
-
-def bounce_effect(w):
-    try:
-        if not w.winfo_exists():
-            return
-        oy = w.winfo_y()
-        
-        def b(c=0):
-            try:
-                if w.winfo_exists() and c < 4:
-                    off = -3 if c % 2 == 0 else 0
-                    w.place(y=oy + off)
-                    w.after(50, lambda: b(c + 1))
-                else:
-                    w.place(y=oy)
-            except:
-                w.place(y=oy)
-        b()
-    except:
-        pass
-
-def style_entry(w):
-    w.configure(
+# Choi's style_entry
+def style_entry(entry):
+    entry.configure(
         bg=BG_CARD, fg=TEXT, insertbackground=TEXT,
         relief="flat", highlightthickness=2, highlightbackground=BORDER,
         highlightcolor=ACCENT, font=FONT_BODY, bd=0
     )
-    
     def on_focus_in(e):
-        w.config(highlightcolor=ACCENT, highlightbackground=ACCENT)
-    
+        entry.config(highlightcolor=ACCENT, highlightbackground=ACCENT)
     def on_focus_out(e):
-        w.config(highlightcolor=BORDER, highlightbackground=BORDER)
-    
-    w.bind("<FocusIn>", on_focus_in)
-    w.bind("<FocusOut>", on_focus_out)
+        entry.config(highlightcolor=BORDER, highlightbackground=BORDER)
+    entry.bind("<FocusIn>", on_focus_in)
+    entry.bind("<FocusOut>", on_focus_out)
 
-def create_button(p, txt, cmd, bg=ACCENT, fg="white",
+# Choi's create_button
+def create_button(parent, text, cmd, bg=ACCENT, fg="white",
                   width=14, pady=8, **kw):
-    b = tk.Button(
-        p, text=txt, command=lambda: [cmd(), pulse_button(b)],
+    btn = tk.Button(
+        parent, text=text, command=lambda: [cmd(), pulse_button(btn)],
         bg=bg, fg=fg,
-        activebackground=ACCENT_H if bg == ACCENT else BG_HOVER,
+        activebackground=ACCENT_H if bg==ACCENT else BG_HOVER,
         relief="flat", bd=0, highlightthickness=0,
         font=FONT_BTN, width=width, pady=pady, cursor="hand2",
         **kw
     )
-
-    def on_enter(e): 
-        b.config(bg=ACCENT_H if bg == ACCENT else BG_HOVER)
-        b.config(font=(FONT_BTN[0], FONT_BTN[1]+1, "bold"))
-    
-    def on_leave(e): 
-        b.config(bg=bg)
-        b.config(font=FONT_BTN)
-    
-    b.bind("<Enter>", on_enter)
-    b.bind("<Leave>", on_leave)
-    return b
-
-def create_modern_card(p, **kw):
-    c = tk.Frame(p, bg=BG_CARD, highlightthickness=1,
-                highlightbackground=BORDER, **kw)
-    
     def on_enter(e):
-        c.config(highlightbackground=ACCENT, highlightthickness=2)
-    
+        btn.config(bg=ACCENT_H if bg==ACCENT else BG_HOVER)
+        btn.config(font=(FONT_BTN[0], FONT_BTN[1]+1, "bold"))
     def on_leave(e):
-        c.config(highlightbackground=BORDER, highlightthickness=1)
-    
-    c.bind("<Enter>", on_enter)
-    c.bind("<Leave>", on_leave)
-    
-    return c
+        btn.config(bg=bg)
+        btn.config(font=FONT_BTN)
+    btn.bind("<Enter>", on_enter)
+    btn.bind("<Leave>", on_leave)
+    return btn

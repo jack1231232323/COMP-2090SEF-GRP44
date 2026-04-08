@@ -1,7 +1,12 @@
+
+# Choi's part - color scheme
+# Guo's part - font settings
+
 RATE_PER_HOUR = 10
 TABLE_IDS = ["0001", "0002", "0003", "0004"]
 DATA_FILE = "mahjong_data.json"
 
+# Choi's dark theme colors
 BG_ROOT = "#1e1e1e"
 BG_CARD = "#2d2d2d"
 BG_HOVER = "#3d3d3d"
@@ -15,6 +20,7 @@ TEXT = "#f0f0f0"
 TEXT_DIM = "#a0a0a0"
 BORDER = "#404040"
 
+# Guo's font selections
 FONT_TITLE = ("Segoe UI", 19, "bold")
 FONT_HEADING = ("Segoe UI", 14, "bold")
 FONT_BODY = ("Segoe UI", 11)

@@ -1,3 +1,8 @@
+# run.py
+# Jack's part - main application class and window management
+# Choi's part - login routing and dashboard/admin switching
+# Guo's part - logout and auth window display
+
 import tkinter as tk
 from storage import Storage
 from verify import AuthWindow
@@ -6,7 +11,7 @@ from admin import AdminWindow
 from config import *
 
 class MahjongApp(tk.Tk):
-    def __init__(self):
+    def __init__(self):  # Jack
         super().__init__()
         self.title("Mahjong Table Management")
         self.configure(bg=BG_ROOT)
@@ -15,11 +20,10 @@ class MahjongApp(tk.Tk):
         self.center()
 
         self.storage = Storage()
-        self.cur_user = None
-
+        self.current_user = None
         self.show_auth()
 
-    def center(self):
+    def center(self):  # Jack
         self.update_idletasks()
         w = self.winfo_width()
         h = self.winfo_height()
@@ -27,25 +31,22 @@ class MahjongApp(tk.Tk):
         y = (self.winfo_screenheight() - h) // 2
         self.geometry(f"{w}x{h}+{x}+{y}")
 
-    def show_auth(self):
+    def show_auth(self):  # Guo
         AuthWindow(self, self.storage, self.on_login)
 
-    def on_login(self, username):
-        self.cur_user = username
-        
+    def on_login(self, username):  # Choi
+        self.current_user = username
+        for child in self.winfo_children():
+            child.destroy()
         if username == "admin":
-            for w in self.winfo_children():
-                w.destroy()
             AdminWindow(self, self.storage)
         else:
-            for w in self.winfo_children():
-                w.destroy()
-            Dashboard(self, self.storage, username, self.do_logout)
+            Dashboard(self, self.storage, username, self.logout)
 
-    def do_logout(self):
-        self.cur_user = None
-        for w in self.winfo_children():
-            w.destroy()
+    def logout(self):  # Guo
+        self.current_user = None
+        for child in self.winfo_children():
+            child.destroy()
         self.show_auth()
 
 if __name__ == "__main__":

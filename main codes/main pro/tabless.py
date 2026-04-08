@@ -1,32 +1,38 @@
+# tabless.py
+# Guo's part - table card widget design and interaction
+# Jack's part - hover effects and button styling
+
 import tkinter as tk
 from tkinter import ttk
 from config import *
 from UI import create_button
 
 class TableCard(tk.Frame):
-    def __init__(self, parent, tid, app):
+    def __init__(self, parent, tid, app):  # Guo
         super().__init__(parent, bg=BG_CARD, highlightthickness=2,
                          highlightbackground=BORDER, padx=18, pady=16)
         self.tid = tid
         self.app = app
         self.booking = None
-        self.do_base()
-        
+        self._build_base()
+
         self.bind("<Enter>", self.on_enter)
         self.bind("<Leave>", self.on_leave)
 
+    # Jack's hover effects
     def on_enter(self, e):
         self.config(highlightbackground=ACCENT, highlightthickness=2)
-    
+
     def on_leave(self, e):
         self.config(highlightbackground=BORDER, highlightthickness=2)
 
-    def do_base(self):
-        hdr = tk.Frame(self, bg=BG_CARD)
-        hdr.pack(fill="x")
-        tk.Label(hdr, text=f"Table {self.tid}", font=FONT_HEADING,
+    # Guo's base UI
+    def _build_base(self):
+        header = tk.Frame(self, bg=BG_CARD)
+        header.pack(fill="x")
+        tk.Label(header, text=f"Table {self.tid}", font=FONT_HEADING,
                  fg=TEXT, bg=BG_CARD).pack(side="left")
-        self.badge = tk.Label(hdr, text="Available", font=FONT_HEADING,
+        self.badge = tk.Label(header, text="Available", font=FONT_HEADING,
                               fg=SUCCESS, bg=BG_CARD)
         self.badge.pack(side="right")
 
@@ -40,6 +46,7 @@ class TableCard(tk.Frame):
                                  bg=SUCCESS, fg="white", width=20)
         self.btn.pack(pady=(12, 0), fill="x")
 
+    # Guo's update logic
     def update(self, booking=None):
         self.booking = booking
         mine = booking and booking.username == self.app.cur_user
@@ -53,8 +60,6 @@ class TableCard(tk.Frame):
                      f"{booking.hours} hr • ${booking.cost:.2f}\n"
                      f"Ends ≈ {booking.end_time_str}"
             )
-            self.after(100, lambda: self.badge.config(fg=ERROR))
-            
             if mine:
                 self.btn.config(
                     text="Close Table", bg=ERROR,

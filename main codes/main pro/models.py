@@ -1,26 +1,27 @@
-from dataclasses import dataclass
+
+
 import hashlib
 import datetime
 
-@dataclass
-class User:
-    username: str
-    password_hash: str
-    balance: float = 0.0
+class User:  # Jack
+    def __init__(self, username, password_hash, balance=0.0):
+        self.username = username
+        self.password_hash = password_hash
+        self.balance = balance
 
-    def check_password(self, pw: str) -> bool:
+    def check_password(self, pw):  # Jack
         return self.password_hash == hashlib.sha256(pw.encode()).hexdigest()
 
-@dataclass
-class Booking:
-    table_id: str
-    username: str
-    hours: int
-    start_time: str
-    cost: float
+class Booking:  
+    def __init__(self, table_id, username, hours, start_time, cost):
+        self.table_id = table_id
+        self.username = username
+        self.hours = hours
+        self.start_time = start_time
+        self.cost = cost
 
     @property
-    def end_time_str(self) -> str:
+    def end_time_str(self):  
         start = datetime.datetime.fromisoformat(self.start_time)
         end = start + datetime.timedelta(hours=self.hours)
         return end.strftime("%H:%M")
