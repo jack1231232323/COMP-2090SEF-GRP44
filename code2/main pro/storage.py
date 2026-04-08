@@ -27,9 +27,8 @@ class Storage:
             self._make_test()
 
     def _make_test(self):
-        self.users['admin'] = User('admin', hashlib.sha256(b'admin123').hexdigest(), 999999.0)
-        self.users['test'] = User('test', hashlib.sha256(b'test123').hexdigest(), 200.0)
-        self.users['demo'] = User('demo', hashlib.sha256(b'demo123').hexdigest(), 150.0)
+        # Only admin account, no test/demo
+        self.users['admin'] = User('admin', hashlib.sha256(b'admin123').hexdigest(), 0.0)
         self.save()
 
     def save(self):
