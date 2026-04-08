@@ -56,19 +56,7 @@ class AuthWindow(tk.Toplevel):
 
         tk.Frame(card, height=2, bg=border).pack(fill='x', pady=16)
 
-        info = tk.Frame(card, bg=bgcard)
-        info.pack(fill='x')
-        tk.Label(info, text="Test accounts:", font=fontsmall, fg=textdim, bg=bgcard).pack(anchor='w')
-        f1 = tk.Frame(info, bg=bgcard)
-        f1.pack(fill='x', pady=4)
-        tk.Label(f1, text="test", font=fontbody, fg=text, bg=bgcard, width=8).pack(side='left')
-        tk.Label(f1, text="••••••", font=fontbody, fg=textdim, bg=bgcard, width=8).pack(side='left')
-        tk.Button(f1, text="Use", command=lambda: self.fill_fields("test","test123"), bg=bgactive, fg=text, font=fontsmall, width=10).pack(side='right')
-        f2 = tk.Frame(info, bg=bgcard)
-        f2.pack(fill='x', pady=4)
-        tk.Label(f2, text="demo", font=fontbody, fg=text, bg=bgcard, width=8).pack(side='left')
-        tk.Label(f2, text="••••••", font=fontbody, fg=textdim, bg=bgcard, width=8).pack(side='left')
-        tk.Button(f2, text="Use", command=lambda: self.fill_fields("demo","demo123"), bg=bgactive, fg=text, font=fontsmall, width=10).pack(side='right')
+        # Test accounts section REMOVED
 
         tk.Label(card, text="Requirements: username≥2, password≥4", font=("Segoe UI",8), fg=textdim, bg=bgcard).pack(pady=(16,0))
 
