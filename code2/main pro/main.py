@@ -1,8 +1,8 @@
 import tkinter as tk
 from storage import Storage
-from verify import AuthWindow
+from auth import AuthWindow
 from dashboard import Dashboard
-from admin import AdminWindow
+from admin_panel import AdminWindow
 from config import *
 
 class MahjongApp(tk.Tk):
