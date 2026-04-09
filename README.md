@@ -6,6 +6,9 @@ Players can top up their balance, open a table for a chosen number of hours, and
 The admin has full control over users, tables, rates, and data backups.
 
 ---
+## Video demos
+Task 1 : https://youtu.be/bdjc25cNVio
+Task 2 : https://youtu.be/sIi14S2fE3Y
 
 ## Features
 
