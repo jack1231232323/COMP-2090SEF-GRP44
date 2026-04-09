@@ -51,7 +51,7 @@ class Dashboard(tk.Frame):
         self._update_user()
 
     def open_table_dialog(self, tid):
-        from opentable import OpenTableDialog
+        from opentable_dialog import OpenTableDialog
         OpenTableDialog(self.master, self.storage, self.cur_user, tid, self.refresh)
 
     def close_table(self, tid):
@@ -65,5 +65,5 @@ class Dashboard(tk.Frame):
             messagebox.showerror("Error", msg, parent=self.master)
 
     def _topup(self):
-        from topup import TopUpDialog
+        from topup_dialog import TopUpDialog
         TopUpDialog(self.master, self.storage, self.cur_user, self.refresh)
