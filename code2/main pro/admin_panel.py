@@ -5,10 +5,6 @@ from datetime import datetime
 import hashlib, json, shutil
 
 def shellsort(userlist):
-    """
-    Shell sort on list of (username, balance) by balance ascending.
-    Returns a new sorted list.
-    """
     n = len(userlist)
     gap = n // 2
     while gap > 0:
