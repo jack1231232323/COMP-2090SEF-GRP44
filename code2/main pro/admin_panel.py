@@ -4,6 +4,56 @@ from config import *
 from datetime import datetime
 import hashlib, json, shutil
 
+class Node:
+    def __init__(self, name, bal):
+        self.name = name
+        self.bal = bal
+        self.left = self.right = None
+
+class Tree:
+    def __init__(self):
+        self.root = None
+    def insert(self, name, bal):
+        if not self.root:
+            self.root = Node(name, bal)
+        else:
+            self._ins(self.root, name, bal)
+    def _ins(self, node, name, bal):
+        if name < node.name:
+            if node.left:
+                self._ins(node.left, name, bal)
+            else:
+                node.left = Node(name, bal)
+        elif name > node.name:
+            if node.right:
+                self._ins(node.right, name, bal)
+            else:
+                node.right = Node(name, bal)
+    def inorder(self):
+        res = []
+        def go(n):
+            if n:
+                go(n.left)
+                res.append((n.name, n.bal))
+                go(n.right)
+        go(self.root)
+        return res
+
+def shell_sort(lst):
+    """Shell sort on list of (username, balance) by balance ascending"""
+    n = len(lst)
+    gap = n // 2
+    while gap > 0:
+        for i in range(gap, n):
+            tmp = lst[i]
+            j = i
+            while j >= gap and lst[j-gap][1] > tmp[1]:
+                lst[j] = lst[j-gap]
+                j -= gap
+            lst[j] = tmp
+        gap //= 2
+    return lst
+
 class AdminWindow(tk.Toplevel):
     def __init__(self, master, storage):
         tk.Toplevel.__init__(self, master)
@@ -184,6 +234,14 @@ class AdminWindow(tk.Toplevel):
         stat_frame = tk.Frame(sets, bg=bgcard, relief="solid", bd=1)
         stat_frame.pack(fill="x", pady=20, ipady=10)
         self._update_stats_ui(stat_frame)
+
+        # ----- Demo buttons for self-study (Binary Tree + Shell Sort) -----
+        demo_frame = tk.Frame(sets, bg=bgcard, bd=1, relief="solid")
+        demo_frame.pack(fill="x", pady=20, ipady=10)
+        tk.Label(demo_frame, text="Self‑study Demo", font=("Segoe UI",12,"bold"), fg=accent, bg=bgcard).pack(pady=5)
+        tk.Button(demo_frame, text="Shell Sort by Balance", command=self.demo_shell, bg=accent, fg="white", font=fontbtn).pack(pady=2)
+        tk.Button(demo_frame, text="Binary Tree (A-Z)", command=self.demo_tree, bg=success, fg="white", font=fontbtn).pack(pady=2)
+        # ----------------------------------------------------------------
 
     def _update_stats_ui(self, parent):
         tu = len(self.storage.users)
@@ -425,3 +483,18 @@ class AdminWindow(tk.Toplevel):
             self.storage.save()
             self.refresh_all()
             messagebox.showinfo("Success", "All bookings cleared")
+
+    # ----- New demo methods for self-study -----
+    def demo_shell(self):
+        data = [(uname, user.balance) for uname, user in self.storage.users.items()]
+        sorted_data = shell_sort(data.copy())
+        msg = "Shell Sort (balance ascending):\n" + "\n".join(f"{n}: ${b:.2f}" for n,b in sorted_data)
+        messagebox.showinfo("Shell Sort Demo", msg)
+
+    def demo_tree(self):
+        tree = Tree()
+        for uname, user in self.storage.users.items():
+            tree.insert(uname, user.balance)
+        ordered = tree.inorder()
+        msg = "Binary Tree (in-order by username):\n" + "\n".join(f"{n}: ${b:.2f}" for n,b in ordered)
+        messagebox.showinfo("Binary Tree Demo", msg)
