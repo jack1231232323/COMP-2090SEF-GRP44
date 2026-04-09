@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 from config import *
 from tabless import TableCard
+from opentable_dialog import OpenTableDialog   # fixed import
+from topup_dialog import TopUpDialog           # fixed import
 
 class Dashboard(tk.Frame):
     def __init__(self, master, storage, cur_user, on_logout):
@@ -51,7 +53,6 @@ class Dashboard(tk.Frame):
         self._update_user()
 
     def open_table_dialog(self, tid):
-        from opentable_dialog import OpenTableDialog
         OpenTableDialog(self.master, self.storage, self.cur_user, tid, self.refresh)
 
     def close_table(self, tid):
@@ -65,5 +66,4 @@ class Dashboard(tk.Frame):
             messagebox.showerror("Error", msg, parent=self.master)
 
     def _topup(self):
-        from topup_dialog import TopUpDialog
         TopUpDialog(self.master, self.storage, self.cur_user, self.refresh)
