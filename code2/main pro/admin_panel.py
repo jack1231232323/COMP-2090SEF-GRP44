@@ -4,23 +4,24 @@ from config import *
 from datetime import datetime
 import hashlib, json, shutil
 
-def sortbybalance(user_list):
+def shellsort(userlist):
     """
     Shell sort on list of (username, balance) by balance ascending.
     Returns a new sorted list.
     """
-    n = len(user_list)
+    n = len(userlist)
     gap = n // 2
     while gap > 0:
         for i in range(gap, n):
-            temp = user_list[i]
+            temp = userlist[i]
             j = i
-            while j >= gap and user_list[j - gap][1] > temp[1]:
-                user_list[j] = user_list[j - gap]
+            while j >= gap and userlist[j - gap][1] > temp[1]:
+                userlist[j] = userlist[j - gap]
                 j -= gap
-            user_list[j] = temp
+            userlist[j] = temp
         gap //= 2
-    return user_list
+    return userlist
+
 
 class AdminWindow(tk.Toplevel):
     def __init__(self, master, storage):
@@ -52,7 +53,6 @@ class AdminWindow(tk.Toplevel):
         tk.Label(head, text="ADMIN PANEL", font=fonttitle, fg=accent, bg=bgcard).pack(side="left", padx=20, pady=15)
         btn_frame = tk.Frame(head, bg=bgcard)
         btn_frame.pack(side="right", padx=20)
-        # The Refresh button now calls refresh_all (which includes shell sort demo)
         tk.Button(btn_frame, text="Refresh", command=self.refresh_all, bg=accent, fg="white", font=fontbtn).pack(side="left", padx=5)
         tk.Button(btn_frame, text="Backup", command=self.backup, bg=success, fg="white", font=fontbtn).pack(side="left", padx=5)
         tk.Button(btn_frame, text="Stats", command=self.stats, bg=warning, fg="white", font=fontbtn).pack(side="left", padx=5)
@@ -60,21 +60,21 @@ class AdminWindow(tk.Toplevel):
         nb = ttk.Notebook(main)
         nb.pack(fill="both", expand=True, padx=10, pady=10)
 
-        # Users tab
+   
         self.user_tab = tk.Frame(nb, bg=bgroot)
         nb.add(self.user_tab, text="Users")
         self._make_user_tab()
 
-        # Tables tab (recreated on refresh)
+    
         self.tables_tab = None
         self._make_tables_tab(nb)
 
-        # Bookings tab
+   
         self.book_tab = tk.Frame(nb, bg=bgroot)
         nb.add(self.book_tab, text="Bookings")
         self._make_bookings_tab()
 
-        # Settings tab
+
         self.sett_tab = tk.Frame(nb, bg=bgroot)
         nb.add(self.sett_tab, text="Settings")
         self._make_settings_tab()
@@ -110,7 +110,8 @@ class AdminWindow(tk.Toplevel):
         if self.tables_tab:
             nb.forget(self.tables_tab)
         self.tables_tab = tk.Frame(nb, bg=bgroot)
-        nb.insert(1, self.tables_tab, text="Tables")
+        nb.add(self.tables_tab, text="Tables")
+
         ctrl = tk.Frame(self.tables_tab, bg=bgcard, height=60)
         ctrl.pack(fill="x", pady=(0,10))
         ctrl.pack_propagate(False)
@@ -125,7 +126,7 @@ class AdminWindow(tk.Toplevel):
         canvas.pack(side="left", fill="both", expand=True, padx=10, pady=10)
         sb.pack(side="right", fill="y", padx=(0,10), pady=10)
 
-        for i, tid in enumerate(tableids):
+        for tid in tableids:
             self._add_admin_card(sf, tid)
 
     def _add_admin_card(self, parent, tid):
@@ -183,7 +184,7 @@ class AdminWindow(tk.Toplevel):
         sets.pack(fill="both", expand=True, padx=20, pady=20)
         tk.Label(sets, text="SYSTEM SETTINGS", font=("Segoe UI",20,"bold"), fg=accent, bg=bgcard).pack(pady=(0,30))
 
-        # Rate
+      
         rf = tk.Frame(sets, bg=bgcard)
         rf.pack(fill="x", pady=10)
         tk.Label(rf, text="Hourly Rate ($):", font=("Segoe UI",12), fg=text, bg=bgcard).pack(side="left")
@@ -192,14 +193,14 @@ class AdminWindow(tk.Toplevel):
         re.pack(side="left", padx=10)
         tk.Button(rf, text="Update", command=self.update_rate, bg=success, fg="white", font=fontbtn).pack(side="left", padx=10)
 
-        # Data management
+       
         df = tk.Frame(sets, bg=bgcard)
         df.pack(fill="x", pady=20)
         tk.Button(df, text="Backup Data", command=self.backup, bg=accent, fg="white", font=fontbtn, width=20).pack(side="left", padx=5, expand=True)
         tk.Button(df, text="Restore Data", command=self.restore, bg=accent, fg="white", font=fontbtn, width=20).pack(side="left", padx=5, expand=True)
         tk.Button(df, text="Reset All", command=self.reset_all, bg=error, fg="white", font=fontbtn, width=20).pack(side="left", padx=5, expand=True)
 
-        # Stats
+   
         stat_frame = tk.Frame(sets, bg=bgcard, relief="solid", bd=1)
         stat_frame.pack(fill="x", pady=20, ipady=10)
         self._update_stats_ui(stat_frame)
@@ -228,22 +229,23 @@ class AdminWindow(tk.Toplevel):
             self.booking_tree.insert("", "end", values=(tid, b.username, b.hours, "$%.2f" % b.cost, b.start_time[:16], et))
 
     def refresh_all(self):
-        # Normal refresh: reload users and bookings, rebuild tables tab
+
         self._load_users()
         self._load_bookings()
+        
         nb = self.master.nametowidget(self.tables_tab.master)
         self._make_tables_tab(nb)
 
-        # ----- Demonstrate Shell Sort algorithm on users by balance -----
-        user_list = [(uname, u.balance) for uname, u in self.storage.users.items()]
-        sorted_list = sortbybalance(user_list.copy())
-        msg = "Shell Sort Demo (users sorted by balance):\n"
-        for uname, bal in sorted_list:
+        
+        userlist = [(uname, u.balance) for uname, u in self.storage.users.items()]
+        sortedlist = shellsort(userlist.copy())
+        msg = "Shell Sort (users sorted by balance):\n"
+        for uname, bal in sortedlist:
             msg += f"{uname}: ${bal:.2f}\n"
         messagebox.showinfo("Algorithm Demo", msg)
-        # ----------------------------------------------------------------
+       
 
-        messagebox.showinfo("Success", "Data refreshed and Shell Sort executed")
+        messagebox.showinfo("Success", "Data refreshed")
 
     def force_close(self, tid):
         if messagebox.askyesno("Confirm", "Force close Table %s?" % tid):
